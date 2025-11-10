@@ -4,11 +4,11 @@
   "repository": "",
   "env": {
     "API_ID": {
-      "description": "",
+      "description": "22470912",
       "required": true
     },
     "API_HASH": {
-      "description": "",
+      "description": "511be78079ed5d4bd4c967bc7b5ee023",
       "required": true
     },
     "BOT_TOKEN": {
