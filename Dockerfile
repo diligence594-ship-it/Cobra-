@@ -1,24 +1,24 @@
-# Lightweight base image
+# Use a lightweight base image
 FROM python:3.11-alpine
 
-# Disable pyc files and buffer logs
+# Prevent .pyc and buffer issues
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Working directory
 WORKDIR /app
 
-# Copy dependencies first
+# Copy dependency list
 COPY requirements.txt .
 
-# Install dependencies
+# Install Python deps + supervisor
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir gunicorn supervisor flask pyrogram tgcrypto
 
-# Copy all project files
+# Copy all source files
 COPY . .
 
-# Create Supervisor config (Flask + Bot)
+# Create Supervisor config inline
 RUN printf "[supervisord]\n\
 nodaemon=true\n\n\
 [program:web]\n\
@@ -34,5 +34,5 @@ autorestart=true\n" > /etc/supervisord.conf
 # Expose web port for Render
 EXPOSE 8080
 
-# Start Supervisor (runs both)
-CMD [\"supervisord\", \"-c\", \"/etc/supervisord.conf\"]
+# ✅ Correct CMD (works 100%)
+CMD sh -c "supervisord -c /etc/supervisord.conf"
