@@ -1,15 +1,27 @@
+# Core Telegram Bot (Pyrogram Fork)
 pyrofork
-aiohttp
-motor
 tgcrypto
+
+# Async + HTTP tools
+aiohttp
 aiofiles
 requests
-hachoir
+httpx
+motor
 cloudscraper
+
+# HTML / parsing utilities
+bs4
 Unidecode
+hachoir
+
+# Crypto + Time utils
 pycryptodome
 pytz
-httpx
-bs4
-gunicorn
+
+# Web Server (Render HTTP Port)
 flask
+gunicorn
+
+# Process Manager
+supervisor
