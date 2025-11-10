@@ -1,38 +1,37 @@
-# Use a lightweight base image
-FROM python:3.11-alpine
+# Use a Python 3.9.6 Alpine base image 
+FROM python:3.9.6-alpine3.14
 
-# Prevent .pyc and buffer issues
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy dependency list
-COPY requirements.txt .
-
-# Install Python deps + supervisor
-RUN pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir gunicorn supervisor flask pyrogram tgcrypto
-
-# Copy all source files
+# Copy all files from the current directory to the container's /app directory
 COPY . .
 
-# Create Supervisor config inline
-RUN printf "[supervisord]\n\
-nodaemon=true\n\n\
-[program:web]\n\
-command=gunicorn app:app -b 0.0.0.0:8080\n\
-autostart=true\n\
-autorestart=true\n\n\
-[program:bot]\n\
-command=python3 Extractor/main.py\n\
-directory=/app\n\
-autostart=true\n\
-autorestart=true\n" > /etc/supervisord.conf
+# Install necessary dependencies
+RUN apk add --no-cache \
+gcc \
+libffi-dev \
+musl-dev \
+ffmpeg \
+aria2 \
+make \
+g++ \
+cmake && \
+wget -q https://github.com/axiomatic-systems/Bento4/archive/v1.6.0-639.zip && \
+unzip v1.6.0-639.zip && \
+cd Bento4-1.6.0-639 && \
+mkdir build && \
+cd build && \
+cmake .. && \
+make -j$(nproc) && \
+cp mp4decrypt /usr/local/bin/ &&\
+cd ../.. && \
+rm -rf Bento4-1.6.0-639 v1.6.0-639.zip
 
-# Expose web port for Render
-EXPOSE 8080
+# Install Python dependencies
+RUN pip3 install --no-cache-dir --upgrade pip \
+&& pip3 install --no-cache-dir --upgrade -r sainibots.txt \
+&& python3 -m pip install -U yt-dlp
 
-# ✅ Correct CMD (works 100%)
-CMD sh -c "supervisord -c /etc/supervisord.conf"
+# Set the command to run the application
+CMD ["sh", "-c", "gunicorn app:app & python3 main.py"]
