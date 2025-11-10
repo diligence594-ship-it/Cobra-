@@ -1,3 +1,19 @@
+# --- keep_alive web server for Render ---
+import threading
+from flask import Flask
+
+def keep_alive():
+    app = Flask(__name__)
+
+    @app.route('/')
+    def home():
+        return "✅ Bot is running on Render!"
+
+    app.run(host='0.0.0.0', port=8080)
+
+threading.Thread(target=keep_alive).start()
+# --- end keep_alive code ---
+
 import aiohttp, cloudscraper, requests, re, asyncio, random
 from concurrent.futures import ThreadPoolExecutor
 executor = ThreadPoolExecutor()
