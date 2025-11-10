@@ -1,21 +1,28 @@
 # Use a lightweight base image
 FROM python:3.11-alpine
 
-# Set environment variables
+# Environment setup
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set working directory
+# Working directory
 WORKDIR /app
 
-# Copy the requirements file
+# Copy dependencies first
 COPY requirements.txt .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install required packages
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir gunicorn supervisor
 
-# Copy the rest of your application code
+# Copy all your project files
 COPY . .
 
-# Command to run Gunicorn for the Flask app and the Extractor
-CMD ["python", "serverV3.py"]
+# Expose web port (Render requires this)
+EXPOSE 8080
+
+# Add supervisor configuration
+COPY supervisord.conf /etc/supervisord.conf
+
+# Start both web app and background services together
+CMD ["supervisord", "-c", "/etc/supervisord.conf"]
