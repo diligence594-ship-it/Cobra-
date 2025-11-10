@@ -1,28 +1,39 @@
 # Use a lightweight base image
 FROM python:3.11-alpine
 
-# Environment setup
+# Prevent Python from writing .pyc files & buffer logs
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Working directory
+# Set working directory
 WORKDIR /app
 
-# Copy dependencies first
+# Copy requirements first for caching
 COPY requirements.txt .
 
-# Install required packages
+# Install dependencies and extra tools
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir gunicorn supervisor
 
-# Copy all your project files
+# Copy all remaining project files
 COPY . .
 
-# Expose web port (Render requires this)
+# Create supervisord configuration directly inside the image
+RUN echo "[supervisord]\n\
+nodaemon=true\n\
+\n\
+[program:web]\n\
+command=gunicorn app:app -b 0.0.0.0:8080\n\
+autostart=true\n\
+autorestart=true\n\
+\n\
+[program:extractor]\n\
+command=python3 -m Extractor\n\
+autostart=true\n\
+autorestart=true" > /etc/supervisord.conf
+
+# Expose Render’s default web port
 EXPOSE 8080
 
-# Add supervisor configuration
-COPY supervisord.conf /etc/supervisord.conf
-
-# Start both web app and background services together
+# Start both Gunicorn (Flask) and Extractor together
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]
