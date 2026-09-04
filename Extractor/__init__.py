@@ -6,10 +6,6 @@ from pyrogram import Client
 from config import API_ID, API_HASH, BOT_TOKEN
 
 
-# ---------------------------------------------------------
-# Base directories
-# ---------------------------------------------------------
-
 BASE_DIR = os.path.join(
     os.path.expanduser("~"),
     ".extractor_bot"
@@ -20,10 +16,6 @@ SESSION_DIR = os.path.join(
     "sessions"
 )
 
-
-# ---------------------------------------------------------
-# Create session directory
-# ---------------------------------------------------------
 
 try:
     os.makedirs(
@@ -36,10 +28,6 @@ except Exception as e:
     sys.exit(1)
 
 
-# ---------------------------------------------------------
-# Logging
-# ---------------------------------------------------------
-
 logging.basicConfig(
     format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s",
     level=logging.INFO
@@ -47,10 +35,6 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-
-# ---------------------------------------------------------
-# Pyrogram Bot Client
-# ---------------------------------------------------------
 
 try:
     app = Client(
