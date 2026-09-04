@@ -12,15 +12,15 @@
       "required": true
     },
     "BOT_TOKEN": {
-      "description": "",
+      "description": "8254141632:AAEYOChM8qs4RdUm8TI4Y9VpEjVleNJUnN8",
       "required": true
     },
     "BOT_USERNAME": {
-      "description": "",
+      "description": "@Huuttrrtybot",
       "required": true
     },
     "OWNER_ID": {
-      "description": "",
+      "description": "7678862761",
       "required": true
     },
     "SUDO_USERS": {
@@ -28,15 +28,15 @@
       "required": false
     },
     "CHANNEL_ID": {
-      "description": "-100",
+      "description": "-1003878357392",
       "required": true
     },
     "MONGO_URL": {
-      "description": "",
+      "description": "mongodb+srv://Demo23:Demo23@cluster0.fjar36c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
       "required": true
     },
     "PREMIUM_LOGS": {
-      "description": "-100",
+      "description": "-1003878357392",
       "required": true
     }
   },
