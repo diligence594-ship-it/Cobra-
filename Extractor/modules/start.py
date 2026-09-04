@@ -167,7 +167,7 @@ back_button  = [[
 captionn =("Welcome to JAAT TXT Extractor Bot.\n\n Some Bot Commands are :\n\n \n /appx - For Master Appx\n /appxlist - For Appxlist\n /appxotp - For Appx OTP Login \n /adda - For Adda 247 \n /cp -  For Classplus \n /getapi - To Find Appx Api api \n /iq - For Study IQ \n /kd - For KD Campus\n /kgs - For Khan GS App\n /pw - For Physics Wallah \n /utkarsh - For Utkarsh " )
 
 
-@a@app.on_message(filters.command("start"))
+@app.on_message(filters.command("start"))
 async def start(_, message):
     await message.reply_text("BOT START WORKING ✅")
   
